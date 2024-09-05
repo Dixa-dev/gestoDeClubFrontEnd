@@ -13,7 +13,7 @@ import axios from "axios";
 import { categorias } from "../../../utils/categorias"; 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import TextInput from "./textInput";
+import TextInput from "./textInput.jsx";
 
 const FormRegistration = () => {
   const [category, setCategory] = useState([]);

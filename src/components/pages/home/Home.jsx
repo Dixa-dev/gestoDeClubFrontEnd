@@ -78,6 +78,7 @@ const Home = () => {
                 Registrate
               </Button>
             </Link>
+            <Link to={"/players"}> <Button sx={{marginTop:"5vh"}}>Jugadores</Button> </Link>
           </Box>
         </Box>
       </Container>

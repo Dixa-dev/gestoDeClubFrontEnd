@@ -52,7 +52,7 @@ const Home = () => {
           >
             <Typography
               variant="h1"
-              sx={{ fontWeight: "950", fontSize: { xs: "1.8rem", md: "6rem" } }}
+              sx={{ fontWeight: "950", fontSize: { xs: "1.8em", md: "6rem" } }}
             >
               Bienvenidos a la web de la Coop!!
             </Typography>
@@ -71,8 +71,8 @@ const Home = () => {
                   color: "white",
                   backgroundColor: "green",
                   height: { xs: "2.5rem", md: "7vh" },
-                  width: { xs: "20vw", md: "10vw" },
-                  fontSize: { xs: "0.5rem", md: "1rem" },
+                  width: { xs: "25vw", md: "10vw" },
+                  fontSize: { xs: "0.7rem", md: "1rem" },
                 }}
               >
                 Registrate

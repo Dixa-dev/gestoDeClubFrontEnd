@@ -12,7 +12,7 @@ const TextInput = ({ label, name, type = "text", formik, placeholder }) => (
         onChange={formik.handleChange}
         error={formik.errors[name] ? true : false}
         helperText={formik.errors[name]}
-        sx={{ marginBottom: "1vh"}}
+        sx={{ marginBottom: "1vh", width:{md:"30vw", xs:"80vw"}}}
         color="success"
       />
     </Box>

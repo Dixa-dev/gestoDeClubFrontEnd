@@ -112,7 +112,7 @@ const FormRegistration = () => {
 
     <form
       onSubmit={formik.handleSubmit}
-      style={{ display: "flex", flexDirection: "column", width: "30vw" }}
+      style={{ display: "flex", flexDirection: "column"}}
     >
       <TextInput label="Nombre" name="nombre" placeholder="Ej: Juan" formik={formik} />
       <TextInput label="Apellido" name="apellido" placeholder="Ej: Perez" formik={formik} />

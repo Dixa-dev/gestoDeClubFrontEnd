@@ -62,12 +62,10 @@ const PlayerList = () => {
       setSelectedCategory(""); 
     };
   
-  
     const verificarPago = (cuotas) => {
       return cuotas.some((cuota) => cuota.mes === mesActual);
     };
   
-    
     const obtenerUltimaCuotaPaga = (cuotas) => {
       if (cuotas.length === 0) return "Sin pagos";
   
@@ -75,24 +73,30 @@ const PlayerList = () => {
   
       if (cuotasPagadas.length === 0) return "Sin pagos";
   
-      // Retornar el mes de la última cuota pagada
       return cuotasPagadas[0].mes;
     };
   
+    // Función para capitalizar la primera letra y separar camelCase con espacios
+    const formatearNombreColumna = (nombre) => {
+      return nombre
+        .replace(/([a-z])([A-Z])/g, '$1 $2')  // Separa palabras en camelCase
+        .replace(/^./, (str) => str.toUpperCase());  // Capitaliza la primera letra
+    };
+  
     return (
-      <Box sx={{display:"flex", flexDirection:"column"}}>
-        <Typography>Sección jugadores</Typography>
+      <Box sx={{display:"flex", flexDirection:"column", marginTop:"8vh", width:"95%", marginLeft:"2vw"}}>
         
-        <Typography>Filtros:</Typography>
+        <Typography color="success">Filtros:</Typography>
         <Box sx={{display:"flex", marginTop:"2vh", marginBottom:"2vh", alignItems:"center", gap:"1vw"}}>
-        <FormControl sx={{ marginBottom: "1vh", width:"10vw"}}>
-          <InputLabel id="category-label" sx={{background: "white", fontSize:"2vh" }} >Categoría</InputLabel>
+        <FormControl sx={{ marginBottom: "1vh", width:"10vw",}}>
+          <InputLabel id="category-label" sx={{background: "white", fontSize:"2vh", color:"green"  }} >Categoría</InputLabel>
           <Select
             name="categoria"
             value={selectedCategory} // El valor actual de la categoría seleccionada
             onChange={(e) => setSelectedCategory(e.target.value)} // Función para manejar el cambio
             variant="outlined"
             size="small"
+            color="success"
           >
             {category.map((cat) => (
               <MenuItem key={cat.id} value={cat.name}>
@@ -101,18 +105,16 @@ const PlayerList = () => {
             ))}
           </Select>
         </FormControl>
-        <Button variant="contained" onClick={quitarFiltros} sx={{ height:"3vh", fontSize: "1.5vh" }}>Quitar filtros</Button>    
+        <Button variant="contained" color="success" onClick={quitarFiltros} sx={{ height:"3vh", fontSize: "1.5vh" }}>Quitar filtros</Button>    
         </Box>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} >
           <Table>
             <TableHead>
-              <TableRow sx={{background:"black"}}> 
-                {/* Renderiza los títulos de las columnas dinámicamente */}
+              <TableRow sx={{background:"green"}}> 
                 {columnas.map((columna) => (
-                  <TableCell sx={{color:"white"}} key={columna}>{columna}</TableCell>
+                  <TableCell sx={{color:"white"}} key={columna}>{formatearNombreColumna(columna)}</TableCell>
                 ))}
-                {/* Añadimos una columna extra para el estado del pago y otra para la última cuota */}
-                <TableCell sx={{color:"white"}} key="estadoPago">Ultima cuota</TableCell>
+                <TableCell sx={{color:"white"}} key="estadoPago">Última Cuota</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -144,4 +146,4 @@ const PlayerList = () => {
   };
   
 
-export default PlayerList
+export default PlayerList;

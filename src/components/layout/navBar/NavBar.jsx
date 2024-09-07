@@ -11,8 +11,10 @@ const NavBar = () => {
     <>
       <AppBar sx={{background:"green"}} position="static">
         <Container >
-          <Toolbar sx={{ display: "flex", height:"20vh",  }}>
-            <Link to={"/"} >
+          <Toolbar sx={{display:"flex", }} >
+            
+            <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
+            <Box sx={{ display: "flex", height:"20vh", alignItems:"center" }}>
             <Box>
               
               <img 
@@ -21,10 +23,13 @@ const NavBar = () => {
                 style={{ height: "16vh" }} 
               />
             </Box>
-            </Link>
+            
             <Typography variant="h5" sx={{width:"10%",}}>
               Club Cooperativa Beltrán
             </Typography>
+            </Box>
+            </Link>
+            
           </Toolbar>
         </Container>
         <Box sx={{backgroundColor:"red", height:"3vh"}}></Box>

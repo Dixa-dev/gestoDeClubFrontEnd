@@ -3,8 +3,10 @@ import FormRegistration from "./components/pages/inscription/FormRegistration.js
 import NavBar from "./components/layout/navBar/NavBar.jsx"
 import Home from "./components/pages/home/Home.jsx"
 import PlayerList from "./components/pages/players/PlayerList.jsx"
+import Footer from "./components/layout/footer/Footer.jsx"
 
 function App() {
+  
 
   return (
     <>
@@ -17,6 +19,7 @@ function App() {
      
 
       </Routes>
+      <Footer />
       </BrowserRouter>
     </>
   )

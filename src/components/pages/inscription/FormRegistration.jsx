@@ -14,6 +14,8 @@ import { categorias } from "../../../utils/categorias";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextInput from "./TextInput.jsx";
+import Alert from '@mui/material/Alert';
+
 
 
 const FormRegistration = () => {

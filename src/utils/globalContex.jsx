@@ -2,7 +2,7 @@
 // import { createContext, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 
-// export const ContextGlobal = createContext();
+// export    const ContextGlobal = createContext();
 
 // export const ContextProvider = ({ children }) => {
 //   // Estado para gestionar si el usuario está logueado

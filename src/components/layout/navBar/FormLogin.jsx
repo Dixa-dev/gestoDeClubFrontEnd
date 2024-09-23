@@ -21,7 +21,7 @@ const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
 
-  const url = "https://gestor-de-club.vercel.app/api/login";
+  const url = "https://gesto-de-club.vercel.app/api/login";
 
   const handleToggleShowPassword = () => {
     setShowPassword(!showPassword);

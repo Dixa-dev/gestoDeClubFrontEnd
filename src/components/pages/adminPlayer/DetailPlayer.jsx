@@ -67,7 +67,8 @@ const DetailPlayer = () => {
   return (
     <Box>
       <Link
-        to={"https://gestor-de-club-front-end.vercel.app/admin-player"}
+        to={"https://gesto-de-club-front-end.vercel.app/admin-players"}
+        
         style={{
           textDecoration: "none",
           color: "inherit",

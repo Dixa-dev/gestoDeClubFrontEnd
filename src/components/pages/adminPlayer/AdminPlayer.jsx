@@ -3,8 +3,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { categorias } from "../../../utils/categorias";
-import dayjs from "dayjs";
 import PlayerList from "./PlayerList";
+import dayjs from "dayjs";
+import "dayjs/locale/es"; // Asegurar que dayjs esté en español
+dayjs.locale("es"); // Establecer el idioma español
 
 const AdminPlayer = () => {
     const [jugadores, setJugadores] = useState([]);
@@ -21,7 +23,7 @@ const AdminPlayer = () => {
         const jugadoresData = res.data;
 
         if (jugadoresData.length > 0) {
-          const columnasDinamicas = Object.keys(jugadoresData[0]);
+          const columnasDinamicas = Object.keys(jugadoresData[0]);  
           setColumnas(columnasDinamicas);
         }
 
@@ -52,7 +54,6 @@ const AdminPlayer = () => {
     fetchCategories();
   }, []);
 
-  const mesActual = dayjs().format('MMMM'); 
 
   const filteredJugadores = selectedCategory 
     ? jugadores.filter((jugador) => jugador.categoria === selectedCategory) 
@@ -63,22 +64,35 @@ const AdminPlayer = () => {
   };
 
 
-  const verificarPago = (cuotas) => {
-    return cuotas.some((cuota) => cuota.mes === mesActual);
-  };
 
   
   const obtenerUltimaCuotaPaga = (cuotas) => {
     if (cuotas.length === 0) return "Sin pagos";
-
-    const cuotasPagadas = cuotas.filter(cuota => cuota.fechaPago).sort((a, b) => new Date(b.fechaPago) - new Date(a.fechaPago));
-
-    if (cuotasPagadas.length === 0) return "Sin pagos";
-
-    // Retornar el mes de la última cuota pagada
-    return cuotasPagadas[0].mes;
+  
+    // Verificar si alguna cuota tiene fecha de pago
+    const ultimaCuota = cuotas[cuotas.length - 1];  // La última cuota en el array
+  
+    if (!ultimaCuota.fechaPago) return "Sin pagos";
+  
+    // Retornar el mes y año de la última cuota pagada
+    return `${ultimaCuota.mes} ${ultimaCuota.anio}`;  // Ejemplo: "Septiembre 2024"
   };
   
+  
+
+  const verificarPago = (cuotas) => {
+    const mesActual = dayjs().format('MMMM'); // Mes actual como string en español (ejemplo: "septiembre")
+    const añoActual = dayjs().format('YYYY'); // Año actual como string (ejemplo: "2024")
+    
+    return cuotas.some((cuota) => {
+      const mesCuota = cuota.mes.trim(); // Eliminar posibles espacios en blanco
+      const añoCuota = cuota.anio.trim(); // Eliminar posibles espacios en blanco en el año
+      
+      // Comparar si el mes y el año coinciden con el mes y año actuales
+      return mesCuota.toLowerCase() === mesActual.toLowerCase() && añoCuota === añoActual;
+    });
+  };
+
     return (
       <PlayerList
         setSelectedCategory={setSelectedCategory}

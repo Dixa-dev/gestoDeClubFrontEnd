@@ -31,7 +31,9 @@ const DetailPlayer = () => {
   const [data, setData] = useState({});
   const [cuotas, setCuotas] = useState([]);
   const [showCuotas, setShowCuotas] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); // Estado para el modal
+  const [modalOpen, setModalOpen] = useState(false); 
+  const [role, setRole] = useState("")
+
 
   const url = `https://gestor-de-club.vercel.app/api/jugadores/${id}`;
 
@@ -43,10 +45,29 @@ const DetailPlayer = () => {
     });
   }, [id, url]);
 
+  useEffect(()=>{
+    
+      const userFromLocalStorage = JSON.parse(localStorage.getItem("user"))
+      console.log(userFromLocalStorage.role);
+      
+  
+      
+        setRole(userFromLocalStorage.role)
+  
+      
+    
+
+
+  },[role])
+ 
+
+  
+
+  
   return (
     <Box>
       <Link
-        to={"http://localhost:5174/admin-players"}
+        to={"http://localhost:5173/admin-players"}
         style={{
           textDecoration: "none",
           color: "inherit",
@@ -104,14 +125,17 @@ const DetailPlayer = () => {
 
             <CardActions>
               <Box sx={{ display: "flex", flexDirection: "column", gap: "2vh" }}>
-                <Button
+
+                {(role === "COBRADOR" || role === "SUPER") && (<Button
                   variant="outlined"
                   size="small"
                   color="success"
                   onClick={() => setModalOpen(true)} // Abrir modal
                 >
                   Registrar cuota
-                </Button>
+                </Button>) }
+                
+                
                 <Button
                   variant="outlined"
                   size="small"

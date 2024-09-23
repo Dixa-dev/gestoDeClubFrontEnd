@@ -4,16 +4,14 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import {  Button, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,   } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
-import { useContext } from "react";
 
 const NavBar = () => {
 
-  // const navigate = useNavigate();
+  
 
-  // const { obj } = useContext(ContextGlobal);
-
+  
   
   return (
     <>
@@ -37,8 +35,9 @@ const NavBar = () => {
             </Typography>
             </Box>
             </Link>
-            
+            <Link to={"/login"} style={{ textDecoration: "none", color: "inherit" }}>
             <Button color="inherit" sx={{gap:"0.5vw", fontSize:"1.5rem"}}><PersonIcon fontSize="large"/> Login</Button>
+            </Link>
            
           </Toolbar>
         </Container>

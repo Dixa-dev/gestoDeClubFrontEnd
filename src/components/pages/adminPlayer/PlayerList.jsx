@@ -33,6 +33,10 @@ const PlayerList = ({
   obtenerUltimaCuotaPaga,
   selectedCategory,
 }) => {
+
+  
+
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Typography>Sección jugadores</Typography>

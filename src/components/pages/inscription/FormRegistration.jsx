@@ -14,7 +14,6 @@ import { categorias } from "../../../utils/categorias";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextInput from "./TextInput.jsx";
-import Alert from '@mui/material/Alert';
 
 
 
@@ -70,10 +69,11 @@ const FormRegistration = () => {
       categoria: "",
     },
     validationSchema: Yup.object({
-      nombre: Yup.string().required("Campo obligatorio").min(3, "Debe tener al menos 3 caracteres").max(12, "No debe exceder 12 caracteres"),
-      apellido: Yup.string().required("Campo obligatorio").min(3, "Debe tener al menos 3 caracteres").max(12, "No debe exceder 12 caracteres"),
+      nombre: Yup.string().required("Campo obligatorio").min(2, "Debe tener al menos 2 caracteres").max(15, "No debe exceder 15 caracteres"),
+      apellido: Yup.string().required("Campo obligatorio").min(2, "Debe tener al menos 2 caracteres").max(15, "No debe exceder 15 caracteres"),
       dni: Yup.string().required("Campo obligatorio").min(5, "Debe tener al menos 5 dígitos"),
       celular: Yup.string().required("Campo obligatorio"),
+      celularEmergencia: Yup.string().required("Campo obligatorio"),
       fechaNacimiento: Yup.date().required("Campo obligatorio"),
       categoria: Yup.string().required("Campo obligatorio"),
     }),

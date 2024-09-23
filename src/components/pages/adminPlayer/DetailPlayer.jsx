@@ -131,7 +131,7 @@ const DetailPlayer = () => {
                   variant="outlined"
                   size="small"
                   color="success"
-                  onClick={() => setModalOpen(true)} // Abrir modal
+                  onClick={() => setModalOpen(true)} 
                 >
                   Registrar cuota
                 </Button>) }

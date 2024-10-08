@@ -13,6 +13,7 @@ import {
   FormControl,
   InputLabel,
   Button,
+  TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -28,14 +29,15 @@ const PlayerList = ({
   category,
   quitarFiltros,
   columnas,
-  filteredJugadores,
+  filteredCategory,
   verificarPago,
   obtenerUltimaCuotaPaga,
   selectedCategory,
+  filteredPlayer
 }) => {
 
-  
 
+  
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -73,6 +75,11 @@ const PlayerList = ({
             ))}
           </Select>
         </FormControl>
+
+        <TextField>
+              
+
+        </TextField>
         <Button
           variant="contained"
           onClick={quitarFiltros}
@@ -102,7 +109,7 @@ const PlayerList = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredJugadores.map((jugador) => (
+            {filteredCategory.map((jugador) => (
               <TableRow key={jugador.id}>
                 {columnas.map((columna) => (
                   <TableCell key={columna}>

@@ -10,6 +10,8 @@ import CopyrightIcon from "@mui/icons-material/Copyright";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+
+  
   return (
     <>
       <AppBar

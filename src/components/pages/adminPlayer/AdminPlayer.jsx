@@ -13,6 +13,8 @@ const AdminPlayer = () => {
   const [columnas, setColumnas] = useState([]);
   const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(""); // Estado para la categoría seleccionada
+  const [selectedPlayer, setSelectedPlayer] = useState([])
+
 
   const url = "https://gestor-de-club.vercel.app/api/jugadores";
 
@@ -28,6 +30,7 @@ const AdminPlayer = () => {
         }
 
         setJugadores(jugadoresData);
+        
       } catch (error) {
         console.log(error.message);
       }
@@ -36,6 +39,8 @@ const AdminPlayer = () => {
     fetchJugadores();
   }, []);
 
+
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -55,15 +60,19 @@ const AdminPlayer = () => {
   }, []);
 
 
-  const filteredJugadores = selectedCategory 
+  const filteredCategory = selectedCategory 
     ? jugadores.filter((jugador) => jugador.categoria === selectedCategory) 
     : jugadores;
 
+  
+
+  const filteredPlayer = selectedPlayer? jugadores.filter((jugador)=>jugador.apellido === selectedPlayer) : jugadores;
+
+
   const quitarFiltros = () => {
     setSelectedCategory(""); 
+    selectedPlayer([])
   };
-
-
 
   
   const obtenerUltimaCuotaPaga = (cuotas) => {
@@ -93,16 +102,22 @@ const AdminPlayer = () => {
     });
   };
 
+
+
+
+
+
     return (
       <PlayerList
         setSelectedCategory={setSelectedCategory}
         category={category}
         quitarFiltros={quitarFiltros}
         columnas={columnas}
-        filteredJugadores={filteredJugadores}
+        filteredCategory={filteredCategory}
         verificarPago={verificarPago}
         obtenerUltimaCuotaPaga={obtenerUltimaCuotaPaga}
         selectedCategory={selectedCategory}
+        filteredPlayer={filteredPlayer}
       />
     );
   };

@@ -7,7 +7,7 @@ export const categorias = [
   { id: "6", name: "C17" },
   { id: "7", name: "C20" },
   { id: "8", name: "PRIMERA" },
-  { id: "9", name: "SENIOR" },
+  { id: "9", name: "SENIOR" },  
   { id: "10", name: "VETERANO" },
   
 ];

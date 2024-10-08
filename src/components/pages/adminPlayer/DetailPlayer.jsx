@@ -45,6 +45,11 @@ const DetailPlayer = () => {
     });
   }, [id, url]);
 
+  console.log(data);
+  console.log(cuotas);
+  
+  
+
   useEffect(()=>{
     
       const userFromLocalStorage = JSON.parse(localStorage.getItem("user"))
@@ -186,8 +191,8 @@ const DetailPlayer = () => {
             <Table>
               <TableBody>
                 {cuotas.length > 0 ? (
-                  cuotas.map((cuota, index) => (
-                    <TableRow key={index}>
+                  cuotas.map((cuota) => (
+                    <TableRow key={cuota.id}>
                       <TableCell>{cuota.anio}</TableCell>
                       <TableCell>{cuota.comprobantePago}</TableCell>
                       <TableCell>{cuota.fechaPago}</TableCell>

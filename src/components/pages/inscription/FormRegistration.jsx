@@ -18,7 +18,7 @@ import TextInput from "./TextInput.jsx";
 
 
 const FormRegistration = () => {
-  const [category, setCategory] = useState([]);
+   const [category, setCategory] = useState([])
   const url = "https://gestor-de-club.vercel.app/api/jugadores"; 
   // Simulación de llamada a la API usando axios
 

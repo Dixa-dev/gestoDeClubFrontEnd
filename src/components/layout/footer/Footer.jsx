@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <>
       <AppBar
-        sx={{ background: "#00800080", height: "35vh" }}
+        sx={{ background: "#00800080", }}
         position="static"
       >
         <Box sx={{ backgroundColor: "#ff00008f", height: "3vh" }}></Box>
@@ -23,16 +23,23 @@ const Footer = () => {
 
         <Container>
           <Toolbar sx={{ display: "flex", justifyContent: "center" }}>
-            <Box sx={{ display: "flex", height: "15vh", alignItems: "center" }}>
+            <Box sx={{ display: "flex", height: "10vh", alignItems: "center" }}>
               <Box>
                 <img
                   src="/Logo Beltran.png"
                   alt="Club Logo"
-                  style={{ height: "10vh" }}
+                  style={{ height: "8vh" }}
                 />
               </Box>
 
-              <Typography variant="h5">Club Cooperativa Beltrán</Typography>
+              <Typography
+                 
+                 sx={{
+                   ml: 1,
+                   width:"80%", // Margen izquierdo para espaciar la imagen y el texto
+                   fontSize:{xs:"0.75rem", md:"1.5rem"}
+                 }}
+               >Club Cooperativa Beltrán</Typography>
             </Box>
           </Toolbar>
 
@@ -67,6 +74,7 @@ const Footer = () => {
               justifyContent: "center",
               alignItems: "center",
               height: "6vh",
+              fontSize:{xs:"0.68rem", md:"1.3rem"}
             }}
           >
             2024 <CopyrightIcon /> - Club Cooperativa Beltran todos los derechos

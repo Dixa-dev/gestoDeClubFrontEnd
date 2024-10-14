@@ -57,22 +57,17 @@ const DetailEvent = () => {
             <TableBody>
               {/* Recaudaciones */}
               {income.map((row) => (
-                <Fragment key={row.id}>
-                  <TableRow>
-                    <TableCell>Recaudación Entradas</TableCell>
-                    <TableCell align="right">{row.recaudacionEntradas}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Recaudación Estacionamiento</TableCell>
-                    <TableCell align="right">{row.recaudacionEstacionamiento}</TableCell>
-                  </TableRow>
-                </Fragment>
+                <TableRow key={row.id}>
+                  <TableCell>{row.nombre}</TableCell>
+                  <TableCell align="right">{row.monto}</TableCell>
+                </TableRow>
               ))}
+              
 
               {/* Gastos */}
               {expense.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell>{row.descripcion}</TableCell>
+                  <TableCell>{row.nombre}</TableCell>
                   <TableCell align="right">{row.monto}</TableCell>
                 </TableRow>
               ))}

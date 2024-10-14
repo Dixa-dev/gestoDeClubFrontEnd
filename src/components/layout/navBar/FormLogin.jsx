@@ -6,17 +6,19 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { ContexGlobal } from "../../../utils/globalContext";
 
 const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { obj } = useContext(ContexGlobal); 
-  const navigate = useNavigate(); 
+  const [error, setError] = useState("");
+  const { obj } = useContext(ContexGlobal);
+  const navigate = useNavigate();
 
   const handleToggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -34,12 +36,22 @@ const FormLogin = () => {
       }),
       validateOnChange: false,
       onSubmit: async (values) => {
-        const usuario = await obj.login(values.nombre, values.password); 
-        if (usuario && usuario.role === "COBRADOR") {
-          navigate("/admin-players"); // Redirige si el rol es COBRADOR
+        const usuario = await obj.login(values.nombre, values.password);
+        if (usuario) {
+          if (usuario.role === "COBRADOR") {
+            navigate("/admin-players");
+          } else if ( usuario.role === "ADMIN" || usuario.role === "SUPER") {
+            navigate("/event");
+          } else {
+            setError("Error en las credenciales o rol no permitido");
+          }
+        } else {
+          setError("Error en las credenciales o rol no permitido");
         }
       },
     });
+
+    
 
   return (
     <Box
@@ -61,6 +73,12 @@ const FormLogin = () => {
         Inicio de sesión
       </Typography>
 
+      {error && (
+        <Alert severity="error" sx={{ mb: 2, width: { xs: "80%", md: "30%" } }}>
+          {error}
+        </Alert>
+      )}
+
       <form
         onSubmit={handleSubmit}
         style={{
@@ -80,7 +98,7 @@ const FormLogin = () => {
           onBlur={handleBlur}
           error={touched.nombre && Boolean(errors.nombre)}
           helperText={touched.nombre && errors.nombre}
-          sx={{ width: "30%" }}
+          sx={{ width: { xs: "80%", md: "30%" } }}
         />
         <TextField
           fullWidth
@@ -92,7 +110,7 @@ const FormLogin = () => {
           onBlur={handleBlur}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
-          sx={{ width: "30%" }}
+          sx={{ width: { xs: "80%", md: "30%" } }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

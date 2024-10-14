@@ -19,7 +19,6 @@ function App() {
           <Route path="/register" element={<FormRegistration />} />
           <Route path="/admin-players" element={<AdminPlayer />} />
           <Route path="/admin-players/:id" element={<DetailPlayer />} />
-
           <Route path="/login" element={<FormLogin />} />
           <Route path="/event" element={<AdminComision/>}/>
           <Route path="/event/:id" element={<DetailEvent/>}/>

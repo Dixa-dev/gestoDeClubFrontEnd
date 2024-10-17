@@ -93,11 +93,11 @@ const TransactionModal = ({ open, handleClose, type, eventId }) => {
             />
           </>
         )}
-        <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button variant="outlined" onClick={handleClose}>
+        <Box sx={{display:"flex", justifyContent:"space-between", marginTop:"2vh" }} >
+          <Button variant="outlined" color="success" onClick={handleClose}>
             Salir
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button variant="contained" color="success" onClick={handleSubmit}>
             Agregar
           </Button>
         </Box>

@@ -1,14 +1,15 @@
+import  { useState, useEffect } from "react";
 import axios from "axios";
-import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, TableCell, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { Box, Button, TableCell, Typography } from "@mui/material";
+import TransactionModal from "./TransactionModal"; // Importar el modal genérico
 
 // Estilos personalizados para las celdas
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -19,10 +20,10 @@ const DetailEvent = () => {
   const [income, setIncome] = useState([]);
   const [expense, setExpense] = useState([]);
   const [data, setData] = useState({});
+  const [openModal, setOpenModal] = useState({ type: null, isOpen: false });
 
   const { id } = useParams();
   const url = `https://gestor-de-club.vercel.app/api/eventos/${id}`;
-  console.log(id);
 
   useEffect(() => {
     axios.get(url).then((res) => {
@@ -34,9 +35,20 @@ const DetailEvent = () => {
   }, [id, url]);
 
   // Calcular total recaudado y total gastado
-  const totalIncome =
-    income.reduce((acc, item) => acc + item.recaudacionEntradas + item.recaudacionEstacionamiento, 0);
+  const totalIncome = income.reduce((acc, item) => acc + item.monto , 0);
   const totalExpense = expense.reduce((acc, item) => acc + item.monto, 0);
+
+  console.log(totalIncome);
+  console.log(totalExpense);
+  
+
+  const handleOpenModal = (type) => {
+    setOpenModal({ type, isOpen: true });
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal({ type: null, isOpen: false });
+  };
 
   return (
     <>
@@ -45,6 +57,17 @@ const DetailEvent = () => {
         <Typography variant="subtitle1">
           Fecha: {new Date(data.createAd).toLocaleDateString("es-ES")}
         </Typography>
+        <Box>
+          <Button onClick={() => handleOpenModal("expense")}>Agregar gasto</Button>
+          <Button onClick={() => handleOpenModal("income")}>Agregar ingreso</Button>
+        </Box>
+
+        <TransactionModal
+          open={openModal.isOpen}
+          handleClose={handleCloseModal}
+          type={openModal.type}
+          eventId={id}
+        />
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -55,16 +78,13 @@ const DetailEvent = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* Recaudaciones */}
               {income.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell>{row.nombre}</TableCell>
                   <TableCell align="right">{row.monto}</TableCell>
                 </TableRow>
               ))}
-              
 
-              {/* Gastos */}
               {expense.map((row) => (
                 <TableRow key={row.id}>
                   <TableCell>{row.nombre}</TableCell>
@@ -72,7 +92,6 @@ const DetailEvent = () => {
                 </TableRow>
               ))}
 
-              {/* Total */}
               <TableRow>
                 <StyledTableCell>Total Recaudado</StyledTableCell>
                 <StyledTableCell align="right">{totalIncome}</StyledTableCell>

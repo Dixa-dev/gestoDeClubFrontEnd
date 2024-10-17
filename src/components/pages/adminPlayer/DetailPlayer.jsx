@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -18,7 +18,8 @@ import {
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import FormFee from './FormFee'; // Asegúrate de importar el componente
+import FormFee from './FormFee';
+import { ContexGlobal } from "../../../utils/globalContext"; // Importar el contexto
 
 const formatColumnTitle = (title) => {
   return title
@@ -31,49 +32,35 @@ const DetailPlayer = () => {
   const [data, setData] = useState({});
   const [cuotas, setCuotas] = useState([]);
   const [showCuotas, setShowCuotas] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); 
-  const [role, setRole] = useState("")
-
+  const [modalOpen, setModalOpen] = useState(false);
+  
 
   const url = `https://gestor-de-club.vercel.app/api/jugadores/${id}`;
+  
+  const { obj: { user } } = useContext(ContexGlobal);
+
 
   useEffect(() => {
-    axios.get(url).then((res) => {
-      const detailData = res.data;
-      setData(detailData);
-      setCuotas(detailData.cuotas);
-    });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(url, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Agregar el token en la cabecera
+        });
+        const detailData = response.data;
+        setData(detailData);
+        setCuotas(detailData.cuotas);
+      } catch (error) {
+        console.error("Error fetching player details:", error);
+      }
+    };
+
+    fetchData();
   }, [id, url]);
 
-  console.log(data);
-  console.log(cuotas);
-  
-  
-
-  useEffect(()=>{
-    
-      const userFromLocalStorage = JSON.parse(localStorage.getItem("user"))
-      console.log(userFromLocalStorage.role);
-      
-  
-      
-        setRole(userFromLocalStorage.role)
-  
-      
-    
-
-
-  },[role])
- 
-
-  
-
-  
   return (
     <Box>
       <Link
-        to={"https://gesto-de-club-front-end.vercel.app/admin-players"}
-        
+        to={"/admin-players"} // Cambiar a la ruta correcta
         style={{
           textDecoration: "none",
           color: "inherit",
@@ -131,17 +118,17 @@ const DetailPlayer = () => {
 
             <CardActions>
               <Box sx={{ display: "flex", flexDirection: "column", gap: "2vh" }}>
+                {(user.role === "COBRADOR" || user.role === "SUPER") && (
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="success"
+                    onClick={() => setModalOpen(true)}
+                  >
+                    Registrar cuota
+                  </Button>
+                )}
 
-                {(role === "COBRADOR" || role === "SUPER") && (<Button
-                  variant="outlined"
-                  size="small"
-                  color="success"
-                  onClick={() => setModalOpen(true)} 
-                >
-                  Registrar cuota
-                </Button>) }
-                
-                
                 <Button
                   variant="outlined"
                   size="small"

@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 // Función para formatear los títulos de las columnas camelCase
 const formatColumnTitle = (title) => {
@@ -29,15 +30,18 @@ const PlayerList = ({
   category,
   quitarFiltros,
   columnas,
-  filteredCategory,
+  jugadoresFiltrados,
   verificarPago,
   obtenerUltimaCuotaPaga,
   selectedCategory,
-  filteredPlayer
+  setFilteredPlayer, // Recibe la función para manejar el input
+  filteredPlayer, // Recibe el valor del input de búsqueda
 }) => {
-
-
-  
+  // Filtrar las columnas que no se deben mostrar
+  const columnasFiltradas = columnas.filter(
+    (columna) =>
+      columna !== "id" && columna !== "createAd" && columna !== "updatedAt"
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -46,48 +50,60 @@ const PlayerList = ({
       {/* inicio seccion filtros */}
       <Typography>Filtros:</Typography>
       <Box
-        sx={{
-          display: "flex",
-          marginTop: "2vh",
-          marginBottom: "2vh",
-          alignItems: "center",
-          gap: "1vw",
-        }}
-      >
-        <FormControl sx={{ marginBottom: "1vh", width: "10vw" }}>
-          <InputLabel
-            id="category-label"
-            sx={{ background: "white", fontSize: "2vh" }}
-          >
-            Categoría
-          </InputLabel>
-          <Select
-            name="categoria"
-            value={selectedCategory} // El valor actual de la categoría seleccionada
-            onChange={(e) => setSelectedCategory(e.target.value)} // Función para manejar el cambio
-            variant="outlined"
-            size="small"
-          >
-            {category.map((cat) => (
-              <MenuItem key={cat.id} value={cat.name}>
-                {cat.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+  sx={{
+    display: "flex",
+    marginTop: "2vh",
+    marginBottom: "2vh",
+    alignItems: "center",
+    gap: "1vw",
+    justifyContent: "start", // Centra los elementos en el contenedor
+  }}
+>
+  <FormControl sx={{ width: "15vw" }}> {/* Asegúrate de que el ancho sea consistente */}
+    <InputLabel
+      id="category-label"
+      sx={{ background: "white", fontSize: "2vh" }}
+      shrink
+    >
+      
+    </InputLabel>
+    <Select
+      name="categoria"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+      variant="outlined"
+      size="small"
+      displayEmpty
+    >
+      <MenuItem value="">
+        <em>Categoría</em>
+      </MenuItem>
+      {category.map((cat) => (
+        <MenuItem key={cat.id} value={cat.name}>
+          {cat.name}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
 
-        <TextField>
-              
+  <TextField
+    placeholder="Buscar por nombre o apellido"
+    value={filteredPlayer}
+    onChange={(e) => setFilteredPlayer(e.target.value)}
+    variant="outlined"
+    size="small"
+    sx={{ width: "15vw" }} // Consistente con el ancho del Select
+  />
 
-        </TextField>
-        <Button
-          variant="contained"
-          onClick={quitarFiltros}
-          sx={{ height: "3vh", fontSize: "1.5vh" }}
-        >
-          Quitar filtros
-        </Button>
-      </Box>
+  <Button
+    variant="contained"
+    onClick={quitarFiltros}
+    sx={{ height: "5.6vh", fontSize: "1.5vh", width: "15vw" }} // Ajusta el tamaño del botón para que coincida
+  >
+    Quitar filtros
+  </Button>
+</Box>
+
       {/* fin seccion filtros */}
 
       {/* inicio seccion tabla */}
@@ -96,12 +112,11 @@ const PlayerList = ({
           <TableHead>
             <TableRow sx={{ background: "black" }}>
               {/* Renderiza los títulos de las columnas dinámicamente y formatea camelCase */}
-              {columnas.map((columna) => (
+              {columnasFiltradas.map((columna) => (
                 <TableCell sx={{ color: "white" }} key={columna}>
                   {formatColumnTitle(columna)}
                 </TableCell>
               ))}
-              {/* Añadimos una columna extra para el estado del pago y otra para la última cuota */}
               <TableCell sx={{ color: "white" }} key="estadoPago">
                 Última cuota
               </TableCell>
@@ -109,9 +124,9 @@ const PlayerList = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredCategory.map((jugador) => (
+            {jugadoresFiltrados.map((jugador) => (
               <TableRow key={jugador.id}>
-                {columnas.map((columna) => (
+                {columnasFiltradas.map((columna) => (
                   <TableCell key={columna}>
                     {columna === "cuotas" ? (
                       verificarPago(jugador.cuotas) ? (
@@ -124,7 +139,6 @@ const PlayerList = ({
                     )}
                   </TableCell>
                 ))}
-                {/* Columna adicional para mostrar la última cuota pagada */}
                 <TableCell>{obtenerUltimaCuotaPaga(jugador.cuotas)}</TableCell>
                 <TableCell>
                   <Link to={`/admin-players/${jugador.id}`}>

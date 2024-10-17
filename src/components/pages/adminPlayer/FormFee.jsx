@@ -17,26 +17,48 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
   const [mes, setMes] = useState("");
   const [monto, setMonto] = useState("");
   const [comprobantePago, setComprobantePago] = useState("");
+  const [error, setError] = useState("");
 
   const fechaPago = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
   const handleSubmit = () => {
-    const cuotaData = {
-      anio,
-      mes,
-      monto: Number(monto),
-      fechaPago,
-      comprobantePago,
-      jugadorId,
-    };
+    const normalizedMes = mes.toLowerCase(); // Convertir mes a minúsculas para evitar duplicados con diferentes casos
 
-    axios.post("https://gestor-de-club.vercel.app/api/cuotas", cuotaData)
+    // Verificar si ya existe una cuota para el mismo año y mes
+    axios.get(`https://gestor-de-club.vercel.app/api/cuotas/${jugadorId}`)
       .then(response => {
-        alert("Cuota registrada", response.data);
-        handleClose(); // Cerrar modal después de enviar
+        const cuotas = Array.isArray(response.data) ? response.data : response.data.cuotas; // Ajustar según la estructura real de la respuesta
+        if (cuotas) {
+          const existingFee = cuotas.find(fee => fee.anio === anio && fee.mes.toLowerCase() === normalizedMes);
+          if (existingFee) {
+            setError("Ya existe una cuota registrada para este mes y año.");
+            return;
+          }
+        }
+
+        const cuotaData = {
+          anio,
+          mes: normalizedMes,
+          monto: Number(monto),
+          fechaPago,
+          comprobantePago,
+          jugadorId,
+        };
+
+        // Enviar la cuota solo si no hay duplicados
+        axios.post("https://gestor-de-club.vercel.app/api/cuotas", cuotaData)
+          .then(resp => {
+            alert("Cuota registrada exitosamente");
+            handleClose(); // Cerrar modal después de enviar
+          })
+          .catch(error => {
+            const errorMsg = error.response?.data?.message || "Error al registrar cuota";
+            alert(errorMsg); 
+            console.error("Error al registrar cuota:", error);
+          });
       })
       .catch(error => {
-        console.error("Error al registrar cuota:", error);
+        console.error("Error al verificar cuotas existentes:", error);
       });
   };
 
@@ -44,6 +66,7 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
         <Typography variant="h6" component="h2">Registrar Cuota</Typography>
+        {error && <Typography color="error">{error}</Typography>}
         <TextField
           label="Año"
           value={anio}

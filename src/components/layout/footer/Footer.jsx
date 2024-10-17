@@ -37,13 +37,13 @@ const Footer = () => {
                  sx={{
                    ml: 1,
                    width:"80%", // Margen izquierdo para espaciar la imagen y el texto
-                   fontSize:{xs:"0.75rem", md:"1.5rem"}
+                   fontSize:{xs:"0.75rem", md:"1.45rem"}
                  }}
                >Club Cooperativa Beltrán</Typography>
             </Box>
           </Toolbar>
 
-          <ol style={{ display: "flex", justifyContent: "center", gap: "8vw" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: "8vw" }}>
             <Link
               to={
                 "https://www.instagram.com/clubcoopbeltran?igsh=bXFkNjJqNjB1cHY1"
@@ -66,7 +66,7 @@ const Footer = () => {
             >
               <XIcon />
             </Link>
-          </ol>
+          </Box>
 
           <Typography
             sx={{

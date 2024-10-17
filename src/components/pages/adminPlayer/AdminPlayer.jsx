@@ -1,118 +1,98 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { categorias } from "../../../utils/categorias";
 import PlayerList from "./PlayerList";
 import dayjs from "dayjs";
 import "dayjs/locale/es"; // Asegurar que dayjs esté en español
+import { ContexGlobal } from "../../../utils/globalContext";
+
 dayjs.locale("es"); // Establecer el idioma español
 
+// Ajusta el código en AdminPlayer:
 const AdminPlayer = () => {
-    const [jugadores, setJugadores] = useState([]);
-    const [columnas, setColumnas] = useState([]);
-    const [category, setCategory] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(""); // Estado para la categoría seleccionada
-    const [selectedPlayer, setSelectedPlayer] = useState([]);
-    const [token, setToken] = useState(
-        localStorage.getItem("token") 
-    );
+  const { obj: { isLoggedIn, user } } = useContext(ContexGlobal);
+  const [jugadores, setJugadores] = useState([]);
+  const [columnas, setColumnas] = useState([]);
+  const [category, setCategory] = useState(categorias);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [filteredPlayer, setFilteredPlayer] = useState(""); // Mover este estado aquí
 
-    const url = "https://gestor-de-club.vercel.app/api/jugadores";
+  const url = "https://gestor-de-club.vercel.app/api/jugadores";
+  const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        const fetchJugadores = async () => {
-            try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Enviar el token en la cabecera
-                    },
-                };
-                const res = await axios.get(url, config); // Agregar config aquí
-                const jugadoresData = res.data;
-
-                if (jugadoresData.length > 0) {
-                    const columnasDinamicas = Object.keys(jugadoresData[0]);
-                    setColumnas(columnasDinamicas);
-                }
-
-                setJugadores(jugadoresData);
-
-            } catch (error) {
-                console.log(error.message);
-            }
+  useEffect(() => {
+    const fetchJugadores = async () => {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
+        const res = await axios.get(url, config);
+        const jugadoresData = res.data;
 
-        fetchJugadores();
-    }, [token]); // Añadir `token` a la lista de dependencias para que se ejecute cuando el token cambie
+        if (jugadoresData.length > 0) {
+          const columnasDinamicas = Object.keys(jugadoresData[0]);
+          setColumnas(columnasDinamicas);
+        }
 
-    console.log(jugadores);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve({ data: categorias });
-                    }, 1000); // Simula un retraso de 1 segundo
-                });
-
-                setCategory(response.data);
-            } catch (error) {
-                console.error("Error fetching categories", error);
-            }
-        };
-
-        fetchCategories();
-    }, []);
-
-    const filteredCategory = selectedCategory
-        ? jugadores.filter((jugador) => jugador.categoria === selectedCategory)
-        : jugadores;
-
-    const filteredPlayer = selectedPlayer ? jugadores.filter((jugador) => jugador.apellido === selectedPlayer) : jugadores;
-
-    const quitarFiltros = () => {
-        setSelectedCategory("");
-        setSelectedPlayer(""); // Cambiado de selectedPlayer([]) a setSelectedPlayer("")
+        setJugadores(jugadoresData);
+      } catch (error) {
+        console.log(error.message);
+      }
     };
 
-    const obtenerUltimaCuotaPaga = (cuotas) => {
-        if (cuotas.length === 0) return "Sin pagos";
+    if (isLoggedIn) {
+      fetchJugadores();
+    }
+  }, [isLoggedIn, token]);
 
-        // Verificar si alguna cuota tiene fecha de pago
-        const ultimaCuota = cuotas[cuotas.length - 1];  // La última cuota en el array
+  // Filtrar jugadores por categoría y nombre/apellido
+  const filteredCategory = selectedCategory
+    ? jugadores.filter((jugador) => jugador.categoria === selectedCategory)
+    : jugadores;
 
-        if (!ultimaCuota.fechaPago) return "Sin pagos";
+  const jugadoresFiltrados = filteredCategory.filter((jugador) =>
+    `${jugador.nombre} ${jugador.apellido}`.toLowerCase().includes(filteredPlayer.toLowerCase())
+  );
 
-        // Retornar el mes y año de la última cuota pagada
-        return `${ultimaCuota.mes} ${ultimaCuota.anio}`;  // Ejemplo: "Septiembre 2024"
-    };
+  const quitarFiltros = () => {
+    setSelectedCategory("");
+    setFilteredPlayer(""); // Ajustar este valor aquí también
+  };
 
-    const verificarPago = (cuotas) => {
-        const mesActual = dayjs().format('MMMM'); // Mes actual como string en español (ejemplo: "septiembre")
-        const añoActual = dayjs().format('YYYY'); // Año actual como string (ejemplo: "2024")
+  const obtenerUltimaCuotaPaga = (cuotas) => {
+    if (cuotas.length === 0) return "Sin pagos";
+    const ultimaCuota = cuotas[cuotas.length - 1];
+    if (!ultimaCuota.fechaPago) return "Sin pagos";
+    return `${ultimaCuota.mes} ${ultimaCuota.anio}`;
+  };
 
-        return cuotas.some((cuota) => {
-            const mesCuota = cuota.mes.trim(); // Eliminar posibles espacios en blanco
-            const añoCuota = cuota.anio.trim(); // Eliminar posibles espacios en blanco en el año
+  const verificarPago = (cuotas) => {
+    const mesActual = dayjs().format('MMMM');
+    const añoActual = dayjs().format('YYYY');
+    return cuotas.some((cuota) => {
+      const mesCuota = cuota.mes.trim();
+      const añoCuota = cuota.anio.trim();
+      return mesCuota.toLowerCase() === mesActual.toLowerCase() && añoCuota === añoActual;
+    });
+  };
 
-            // Comparar si el mes y el año coinciden con el mes y año actuales
-            return mesCuota.toLowerCase() === mesActual.toLowerCase() && añoCuota === añoActual;
-        });
-    };
-
-    return (
-        <PlayerList
-            setSelectedCategory={setSelectedCategory}
-            category={category}
-            quitarFiltros={quitarFiltros}
-            columnas={columnas}
-            filteredCategory={filteredCategory}
-            verificarPago={verificarPago}
-            obtenerUltimaCuotaPaga={obtenerUltimaCuotaPaga}
-            selectedCategory={selectedCategory}
-            filteredPlayer={filteredPlayer}
-        />
-    );
+  return (
+    <PlayerList
+      setSelectedCategory={setSelectedCategory}
+      setFilteredPlayer={setFilteredPlayer} // Pasa esta función para actualizar el estado de búsqueda
+      category={category}
+      quitarFiltros={quitarFiltros}
+      columnas={columnas}
+      jugadoresFiltrados={jugadoresFiltrados}
+      verificarPago={verificarPago}
+      obtenerUltimaCuotaPaga={obtenerUltimaCuotaPaga}
+      selectedCategory={selectedCategory}
+      filteredPlayer={filteredPlayer} // Pasa el estado para manejar el input de búsqueda
+    />
+  );
 };
+
 
 export default AdminPlayer;

@@ -59,7 +59,7 @@ const PlayerList = ({
     justifyContent: "start", // Centra los elementos en el contenedor
   }}
 >
-  <FormControl sx={{ width: "15vw" }}> {/* Asegúrate de que el ancho sea consistente */}
+  <FormControl sx={{ width: {xs:"40vw",md:"15vw"} }}> {/* Asegúrate de que el ancho sea consistente */}
     <InputLabel
       id="category-label"
       sx={{ background: "white", fontSize: "2vh" }}
@@ -74,6 +74,7 @@ const PlayerList = ({
       variant="outlined"
       size="small"
       displayEmpty
+      
     >
       <MenuItem value="">
         <em>Categoría</em>
@@ -92,13 +93,13 @@ const PlayerList = ({
     onChange={(e) => setFilteredPlayer(e.target.value)}
     variant="outlined"
     size="small"
-    sx={{ width: "15vw" }} // Consistente con el ancho del Select
+    sx={{ width: {xs:"30vw",md:"15vw"} }} // Consistente con el ancho del Select
   />
 
   <Button
     variant="contained"
     onClick={quitarFiltros}
-    sx={{ height: "5.6vh", fontSize: "1.5vh", width: "15vw" }} // Ajusta el tamaño del botón para que coincida
+    sx={{ height: "5.6vh", fontSize: "1.5vh", width: {xs:"5vw",md:"15vw"} }} // Ajusta el tamaño del botón para que coincida
   >
     Quitar filtros
   </Button>

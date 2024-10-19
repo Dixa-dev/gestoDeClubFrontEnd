@@ -20,6 +20,7 @@ const AdminComision = () => {
   const [open, setOpen] = useState(false);
 
   const url = "https://gestor-de-club.vercel.app/api/eventos";
+  
 
   useEffect(() => {
     axios

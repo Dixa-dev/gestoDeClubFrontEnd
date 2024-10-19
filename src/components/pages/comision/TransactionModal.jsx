@@ -17,7 +17,7 @@ const modalStyle = {
 };
 
 // Modal genérico para agregar ingresos o gastos
-const TransactionModal = ({ open, handleClose, type, eventId }) => {
+const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSuccess }) => {
   const [formData, setFormData] = useState({
     nombre: "",
     monto: 0,
@@ -54,9 +54,9 @@ const TransactionModal = ({ open, handleClose, type, eventId }) => {
 
     axios
       .post(url, data)
-      .then(() => {
+      .then((response) => {
         handleClose();
-        window.location.reload(); // Refrescar datos tras agregar ingreso o gasto
+        onTransactionSuccess(response.data); // Llamar a la función para actualizar el estado
       })
       .catch((error) => {
         console.error("Error al agregar transacción:", error);

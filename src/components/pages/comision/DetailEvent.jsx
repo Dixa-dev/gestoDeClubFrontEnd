@@ -63,14 +63,23 @@ const DetailEvent = () => {
     setOpenModal({ type: null, isOpen: false });
   };
 
+  // Actualizar el estado con la nueva transacción
+  const handleTransactionSuccess = (transaction) => {
+    if (transaction.reciboInicial !== undefined) {
+      setIncome((prevIncome) => [...prevIncome, transaction]);
+    } else {
+      setExpense((prevExpense) => [...prevExpense, transaction]);
+    }
+  };
+
   return (
     <>
-      <Box >
-        <Typography sx={{marginTop:"5vh", marginLeft:"2vh"}} variant="h4">{data.titulo}</Typography>
-        <Typography variant="subtitle1" sx={{marginTop:"0.5vh", marginLeft:"2vh"}}>
+      <Box>
+        <Typography sx={{ marginTop: "5vh", marginLeft: "2vh" }} variant="h4">{data.titulo}</Typography>
+        <Typography variant="subtitle1" sx={{ marginTop: "0.5vh", marginLeft: "2vh" }}>
           Fecha: {new Date(data.createAd).toLocaleDateString("es-ES")}
         </Typography>
-        <Box sx={{display:"flex", justifyContent:"center", gap:"10vw", marginTop:"5vh"}}>
+        <Box sx={{ display: "flex", justifyContent: "center", gap: "10vw", marginTop: "5vh" }}>
           <Button variant="outlined" color="success" onClick={() => handleOpenModal("expense")}>+ Agregar gasto</Button>
           <Button variant="outlined" color="success" onClick={() => handleOpenModal("income")}> + Agregar ingreso</Button>
         </Box>
@@ -80,6 +89,7 @@ const DetailEvent = () => {
           handleClose={handleCloseModal}
           type={openModal.type}
           eventId={id}
+          onTransactionSuccess={handleTransactionSuccess}
         />
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <TableContainer component={Paper} sx={{ marginBottom: "10vh", marginTop: "5vh", width: "65%" }}>

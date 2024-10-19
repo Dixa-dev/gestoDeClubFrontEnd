@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import FormRegistration from "./components/pages/inscription/FormRegistration.jsx";
 import NavBar from "./components/layout/navBar/NavBar.jsx";
 import Home from "./components/pages/home/Home.jsx";
@@ -12,19 +12,18 @@ import DetailEvent from "./components/pages/comision/DetailEvent.jsx";
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<FormRegistration />} />
-          <Route path="/admin-players" element={<AdminPlayer />} />
-          <Route path="/admin-players/:id" element={<DetailPlayer />} />
-          <Route path="/login" element={<FormLogin />} />
-          <Route path="/event" element={<AdminComision/>}/>
-          <Route path="/event/:id" element={<DetailEvent/>}/>
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<FormRegistration />} />
+        <Route path="/admin-players" element={<AdminPlayer />} />
+        <Route path="/admin-players/:id" element={<DetailPlayer />} />
+        <Route path="/login" element={<FormLogin />} />
+        <Route path="/event" element={<AdminComision />} />
+        <Route path="/event/:id" element={<DetailEvent />} />
+      </Routes>
+      <Footer />
     </>
   );
 }

@@ -38,31 +38,56 @@ const Home = () => {
               flexDirection: "column",
               width: "75%",
               alignItems: "center",
+
               padding: "2rem",
               borderRadius: "10px",
               backgroundColor: {
-                xs: "rgba(255, 255, 255, 0.7)", 
-                md: "transparent", 
+                xs: "rgba(255, 255, 255, 0.7)",
+                md: "transparent",
               },
               color: {
-                xs: "green", 
-                md: "white", 
+                xs: "green",
+                md: "white",
               },
             }}
           >
-            <Typography
-              variant="h1"
-              sx={{ fontWeight: "950", fontSize: { xs: "2rem", md: "6rem"}}}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%", // Asegura que el Box ocupe todo el ancho
+              }}
             >
-              Bienvenidos a la web de la Coop!!
-            </Typography>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontWeight: "950",
+                  fontSize: { xs: "1.5rem", md: "6rem" },
+                  textAlign: "center", // Centra el texto en el contenedor
+                }}
+              >
+                Bienvenidos a la web de la Coop!!
+              </Typography>
+            </Box>
+
             <Typography
               variant="h4"
-              sx={{ marginTop: "3vh", marginBottom: { xs: "2vh", md: "5vh" }, fontSize: { xs: "0.85rem", md: "2rem" } }}
+              sx={{
+                marginTop: "3vh",
+                marginBottom: { xs: "2vh", md: "5vh" },
+                fontSize: { xs: "0.85rem", md: "2rem" },
+              }}
             >
               Una familia, un club, la misma pasión
             </Typography>
-            <Typography variant="h6" sx={{ marginBottom: "1.5vh", fontSize: { xs: "1rem", md: "1.5rem" }  }}>
+            <Typography
+              variant="h6"
+              sx={{
+                marginBottom: "1.5vh",
+                fontSize: { xs: "1rem", md: "1.5rem" },
+              }}
+            >
               ¿Sos jugador?
             </Typography>
             <Link to={"/register"}>
@@ -73,13 +98,12 @@ const Home = () => {
                   height: { xs: "2.5rem", md: "7vh" },
                   width: { xs: "25vw", md: "10vw" },
                   fontSize: { xs: "0.7rem", md: "1rem" },
-                  marginTop:"2vh"
+                  marginTop: "2vh",
                 }}
               >
                 Registrate
               </Button>
             </Link>
-           
           </Box>
         </Box>
       </Container>

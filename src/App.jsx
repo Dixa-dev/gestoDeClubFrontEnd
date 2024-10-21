@@ -8,6 +8,8 @@ import DetailPlayer from "./components/pages/adminPlayer/DetailPlayer.jsx";
 import FormLogin from "./components/layout/navBar/FormLogin.jsx";
 import AdminComision from "./components/pages/comision/AdminComision.jsx";
 import DetailEvent from "./components/pages/comision/DetailEvent.jsx";
+import Statitics from "./components/pages/statistics/Statitics.jsx";
+import StatiticsFee from "./components/pages/statistics/StatiticsFee.jsx";
 
 function App() {
   return (
@@ -22,7 +24,9 @@ function App() {
         <Route path="/login" element={<FormLogin />} />
         <Route path="/event" element={<AdminComision />} />
         <Route path="/event/:id" element={<DetailEvent />} />
-      </Routes>
+        <Route path="/statistics" element={<Statitics />} />
+        <Route path="/statistics/:mes/:anio" element={<StatiticsFee />} />
+        </Routes>
       <Footer />
     </>
   );

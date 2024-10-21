@@ -52,13 +52,13 @@ const Home = () => {
           >
             <Typography
               variant="h1"
-              sx={{ fontWeight: "950", fontSize: { xs: "1.9rem", md: "6rem"} }}
+              sx={{ fontWeight: "950", fontSize: { xs: "1.6rem", md: "6rem"}, marginLeft:{xs: "1.3vw", md: "0"}}}
             >
               Bienvenidos a la web de la Coop!!
             </Typography>
             <Typography
               variant="h4"
-              sx={{ marginTop: "3vh", marginBottom: { xs: "2vh", md: "5vh" }, fontSize: { xs: "1rem", md: "2rem" } }}
+              sx={{ marginTop: "3vh", marginBottom: { xs: "2vh", md: "5vh" }, fontSize: { xs: "0.85rem", md: "2rem" } }}
             >
               Una familia, un club, la misma pasión
             </Typography>

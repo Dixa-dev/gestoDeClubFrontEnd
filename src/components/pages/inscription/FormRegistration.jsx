@@ -33,6 +33,7 @@ const FormRegistration = () => {
       await axios.post(url, data);
       console.log(data);
       alert("Formulario enviado con éxito");
+      formik.resetForm(); 
     } catch (error) {
       if (error.response && error.response.status === 409) {
         alert(error.response.data.message); 
@@ -102,7 +103,7 @@ const FormRegistration = () => {
           <TextInput label="Celular Emergencia" name="celularEmergencia" placeholder="Ej: 221 6082234" formik={formik} />
           <TextInput label="Fecha de nacimiento" name="fechaNacimiento" type="date" formik={formik} />
 
-          <Box sx={{ display: "flex", flexDirection: "column", width: "100%", marginTop: "2vh" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", width: "100%"}}>
             <Typography sx={{ marginLeft: "0.5vw", color: "green" }}>Categoría</Typography>
             <FormControl sx={{ marginBottom: "1vh", width: "100%" }}>
               <Select

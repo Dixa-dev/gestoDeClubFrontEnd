@@ -52,7 +52,7 @@ const Home = () => {
           >
             <Typography
               variant="h1"
-              sx={{ fontWeight: "950", fontSize: { xs: "1.6rem", md: "6rem"}, marginLeft:{xs: "1.3vw", md: "0"}}}
+              sx={{ fontWeight: "950", fontSize: { xs: "1.6rem", md: "6rem"}}}
             >
               Bienvenidos a la web de la Coop!!
             </Typography>

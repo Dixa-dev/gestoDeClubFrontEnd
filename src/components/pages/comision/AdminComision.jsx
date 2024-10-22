@@ -110,7 +110,7 @@ const AdminComision = () => {
           </Button>
         </Link>
 
-        <Link to={"/admin-players"}>
+        <Link to={"/statistics"}>
           <Button
             color="success"
             sx={{ backgroundColor: "white", border: "solid" }}

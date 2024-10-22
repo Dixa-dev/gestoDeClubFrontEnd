@@ -5,6 +5,9 @@ import { categorias } from "../../../utils/categorias";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextInput from "./TextInput.jsx";
+import InputMask from "react-input-mask";
+
+
 
 const FormRegistration = () => {
   const [category, setCategory] = useState([]);
@@ -60,7 +63,7 @@ const FormRegistration = () => {
       dni: Yup.string().required("Campo obligatorio").min(5, "Debe tener al menos 5 dígitos"),
       celular: Yup.string().required("Campo obligatorio"),
       celularEmergencia: Yup.string().required("Campo obligatorio"),
-      fechaNacimiento: Yup.date().required("Campo obligatorio"),
+      fechaNacimiento: Yup.string().required("Campo obligatorio"),
       categoria: Yup.string().required("Campo obligatorio"),
     }),
     validateOnChange: false,
@@ -101,7 +104,23 @@ const FormRegistration = () => {
           <TextInput label="Documento" name="dni" placeholder="Ej: 35610825" formik={formik} />
           <TextInput label="Celular" name="celular" placeholder="Ej: 221 5456633" formik={formik} />
           <TextInput label="Celular Emergencia" name="celularEmergencia" placeholder="Ej: 221 6082234" formik={formik} />
-          <TextInput label="Fecha de nacimiento" name="fechaNacimiento" type="date" formik={formik} />
+          <InputMask
+            mask="99/99/9999"
+            value={formik.values.fechaNacimiento}
+            onChange={formik.handleChange}
+            name="fechaNacimiento"
+          >
+            {({ value, ...inputProps }) => (
+              <TextInput
+                {...inputProps}
+                value={value}
+                label="Fecha de nacimiento"
+                name="fechaNacimiento"
+                placeholder="DD/MM/YYYY"
+                formik={formik}
+              />
+            )}
+          </InputMask>
 
           <Box sx={{ display: "flex", flexDirection: "column", width: "100%"}}>
             <Typography sx={{ marginLeft: "0.5vw", color: "green" }}>Categoría</Typography>

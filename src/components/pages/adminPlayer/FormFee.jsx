@@ -23,19 +23,22 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
 
   const handleSubmit = () => {
     const normalizedMes = mes.toLowerCase(); // Convertir mes a minúsculas para evitar duplicados con diferentes casos
-
-    // Verificar si ya existe una cuota para el mismo año y mes
-    axios.get(`https://gestor-de-club.vercel.app/api/cuotas/${jugadorId}`)
+  
+    // Ajuste: Obtener todas las cuotas y filtrar por jugadorId en el frontend
+    axios.get("https://gestor-de-club.vercel.app/api/cuotas")
       .then(response => {
-        const cuotas = Array.isArray(response.data) ? response.data : response.data.cuotas; // Ajustar según la estructura real de la respuesta
+        const cuotas = response.data;
         if (cuotas) {
-          const existingFee = cuotas.find(fee => fee.anio === anio && fee.mes.toLowerCase() === normalizedMes);
+          // Filtrar cuotas para el jugador específico
+          const cuotasJugador = cuotas.filter(fee => fee.jugadorId === jugadorId);
+          
+          const existingFee = cuotasJugador.find(fee => fee.anio === anio && fee.mes.toLowerCase() === normalizedMes);
           if (existingFee) {
             setError("Ya existe una cuota registrada para este mes y año.");
             return;
           }
         }
-
+  
         const cuotaData = {
           anio,
           mes: normalizedMes,
@@ -44,7 +47,7 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
           comprobantePago,
           jugadorId,
         };
-
+  
         // Enviar la cuota solo si no hay duplicados
         axios.post("https://gestor-de-club.vercel.app/api/cuotas", cuotaData)
           .then(resp => {

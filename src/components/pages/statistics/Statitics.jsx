@@ -9,7 +9,7 @@ const Statitics = () => {
   const [balances, setBalances] = useState([]);
 
   useEffect(() => {
-    axios.get("https://gestor-de-club.vercel.app/api/balance").then((res) => {
+    axios.get("https://gestor-de-club.vercel.app/api/estadisticas").then((res) => {
       setBalances(res.data);
     });
   }, []);

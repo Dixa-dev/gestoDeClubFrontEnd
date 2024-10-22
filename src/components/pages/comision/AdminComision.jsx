@@ -8,11 +8,12 @@ import {
   DialogTitle,
   TextField,
   Typography,
-  CardActions,
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminComision = () => {
   const [events, setEvents] = useState([]);
@@ -20,7 +21,6 @@ const AdminComision = () => {
   const [open, setOpen] = useState(false);
 
   const url = "https://gestor-de-club.vercel.app/api/eventos";
-  
 
   useEffect(() => {
     axios
@@ -50,12 +50,13 @@ const AdminComision = () => {
     axios
       .post(url, createEvent)
       .then((response) => {
-        alert("Evento registrado", response.data);
+        toast.success("Evento registrado correctamente");
         handleClose(); // Cerrar modal después de enviar
         // Recargar la lista de eventos
         setEvents([...events, response.data]);
       })
       .catch((error) => {
+        toast.error("Error al registrar evento");
         console.error("Error al registrar evento:", error);
       });
   };
@@ -152,6 +153,7 @@ const AdminComision = () => {
           </CardContent>
         ))}
       </Box>
+      <ToastContainer />
     </Box>
   );
 };

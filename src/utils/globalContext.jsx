@@ -38,11 +38,12 @@ export const ContextProvider = ({ children }) => {
         setIsLoggedIn(true);
         return { nombre, role };
       } else {
-        alert("Error al iniciar sesión: " + response.data.message);
+        
+        console.log("Error al iniciar sesión: " + response.data.message);
+        
       }
     } catch (error) {
       console.error("Error al iniciar sesión", error);
-      alert("Error al iniciar sesión");
     }
   };
 

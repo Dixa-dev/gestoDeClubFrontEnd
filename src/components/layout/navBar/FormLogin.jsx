@@ -6,17 +6,17 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  Alert,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ContexGlobal } from "../../../utils/globalContext";
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const FormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const { obj } = useContext(ContexGlobal);
   const navigate = useNavigate();
 
@@ -39,19 +39,19 @@ const FormLogin = () => {
         const usuario = await obj.login(values.nombre, values.password);
         if (usuario) {
           if (usuario.role === "COBRADOR") {
+            toast.success("Inicio de sesión exitoso");
             navigate("/admin-players");
-          } else if ( usuario.role === "ADMIN" || usuario.role === "SUPER") {
+          } else if (usuario.role === "ADMIN" || usuario.role === "SUPER") {
+            toast.success("Inicio de sesión exitoso");
             navigate("/event");
           } else {
-            setError("Error en las credenciales o rol no permitido");
+            toast.error("Error en las credenciales o rol no permitido");
           }
         } else {
-          setError("Error en las credenciales o rol no permitido");
+          toast.error("Error en las credenciales o rol no permitido");
         }
       },
     });
-
-    
 
   return (
     <Box
@@ -63,6 +63,7 @@ const FormLogin = () => {
         alignItems: "center",
       }}
     >
+      <ToastContainer />
       <Typography
         sx={{
           marginBottom: { xs: "2vh", md: "5vh" },
@@ -72,12 +73,6 @@ const FormLogin = () => {
       >
         Inicio de sesión
       </Typography>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 2, width: { xs: "80%", md: "30%" } }}>
-          {error}
-        </Alert>
-      )}
 
       <form
         onSubmit={handleSubmit}

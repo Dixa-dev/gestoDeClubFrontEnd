@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Box, TextField, Button, Typography } from "@mui/material";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: 'absolute',
@@ -51,12 +53,12 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
         // Enviar la cuota solo si no hay duplicados
         axios.post("https://gestor-de-club.vercel.app/api/cuotas", cuotaData)
           .then(resp => {
-            alert("Cuota registrada exitosamente");
+            toast.success("Cuota registrada exitosamente");
             handleClose(); // Cerrar modal después de enviar
           })
           .catch(error => {
             const errorMsg = error.response?.data?.message || "Error al registrar cuota";
-            alert(errorMsg); 
+            toast.error(errorMsg); 
             console.error("Error al registrar cuota:", error);
           });
       })
@@ -66,50 +68,53 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box sx={style}>
-        <Typography variant="h6" component="h2">Registrar Cuota</Typography>
-        {error && <Typography color="error">{error}</Typography>}
-        <TextField
-          label="Año"
-          value={anio}
-          onChange={(e) => setAnio(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Mes"
-          value={mes}
-          onChange={(e) => setMes(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Monto"
-          value={monto}
-          onChange={(e) => setMonto(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Comprobante de Pago"
-          value={comprobantePago}
-          onChange={(e) => setComprobantePago(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Fecha de Pago"
-          value={fechaPago}
-          disabled
-          fullWidth
-          margin="normal"
-        />
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Registrar
-        </Button>
-      </Box>
-    </Modal>
+    <>
+      <ToastContainer />
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">Registrar Cuota</Typography>
+          {error && <Typography color="error">{error}</Typography>}
+          <TextField
+            label="Año"
+            value={anio}
+            onChange={(e) => setAnio(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Mes"
+            value={mes}
+            onChange={(e) => setMes(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Monto"
+            value={monto}
+            onChange={(e) => setMonto(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Comprobante de Pago"
+            value={comprobantePago}
+            onChange={(e) => setComprobantePago(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Fecha de Pago"
+            value={fechaPago}
+            disabled
+            fullWidth
+            margin="normal"
+          />
+          <Button variant="contained" color="primary" onClick={handleSubmit}>
+            Registrar
+          </Button>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

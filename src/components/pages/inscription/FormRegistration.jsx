@@ -6,8 +6,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextInput from "./TextInput.jsx";
 import InputMask from "react-input-mask";
-
-
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const FormRegistration = () => {
   const [category, setCategory] = useState([]);
@@ -35,14 +35,14 @@ const FormRegistration = () => {
     try {
       await axios.post(url, data);
       console.log(data);
-      alert("Formulario enviado con éxito");
+      toast.success("Formulario enviado con éxito");
       formik.resetForm(); 
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        alert(error.response.data.message); 
+        toast.error(error.response.data.message); 
       } else {
         console.error("Error al enviar formulario", error);
-        alert("Error al enviar formulario");
+        toast.error("Error al enviar formulario");
       }
     }
   };
@@ -156,6 +156,9 @@ const FormRegistration = () => {
           </Button>
         </Box>
       </form>
+      
+      {/* Toast container */}
+      <ToastContainer />
     </Box>
   );
 };

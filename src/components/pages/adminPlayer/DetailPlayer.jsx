@@ -14,6 +14,7 @@ import {
   TableRow,
   Paper,
   Stack,
+  Grid,
 } from "@mui/material";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
@@ -34,11 +35,9 @@ const DetailPlayer = () => {
   const [showCuotas, setShowCuotas] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   
-
   const url = `https://gestor-de-club.vercel.app/api/jugadores/${id}`;
   
   const { obj: { user } } = useContext(ContexGlobal);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,11 +84,13 @@ const DetailPlayer = () => {
         <Card
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", md: "row" },
             marginBottom: "10vh",
             marginTop: "10vh",
             border: "solid black 2px",
-            width: "50%",
+            width: { xs: "80%", md: "50%" },
             justifyContent: "space-around",
+            padding: { xs: "2vh", md: "0" }
           }}
         >
           <CardContent
@@ -106,9 +107,9 @@ const DetailPlayer = () => {
                 <Avatar
                   sx={{
                     bgcolor: "green",
-                    width: "10vw",
-                    height: "20vh",
-                    fontSize: "2.5rem",
+                    width: { md: "10vw", xs: "20vw" },
+                    height: { md: "20vh", xs: "15vh" },
+                    fontSize: { md: "2.5rem", xs: "1.5rem" },
                   }}
                 >
                   {`${data.nombre[0]}${data.apellido ? data.apellido[0] : ""}`}
@@ -124,6 +125,7 @@ const DetailPlayer = () => {
                     size="small"
                     color="success"
                     onClick={() => setModalOpen(true)}
+                    sx={{ fontSize: { md: "0.9rem", xs: "0.7rem" } }}
                   >
                     Registrar cuota
                   </Button>
@@ -134,6 +136,7 @@ const DetailPlayer = () => {
                   size="small"
                   color="success"
                   onClick={() => setShowCuotas(!showCuotas)}
+                  sx={{ fontSize: { md: "0.9rem", xs: "0.7rem" } }}
                 >
                   Historial cuota
                 </Button>
@@ -151,7 +154,7 @@ const DetailPlayer = () => {
                     )
                     .map(([key, value]) => (
                       <TableRow key={key}>
-                        <TableCell sx={{ paddingRight: "5vw" }}>
+                        <TableCell sx={{ paddingRight: { xs: "1vw", md: "5vw" } }}>
                           <Typography variant="body1" component="div" fontWeight="bold">
                             {formatColumnTitle(key)}
                           </Typography>
@@ -202,7 +205,7 @@ const DetailPlayer = () => {
       <FormFee
         open={modalOpen}
         handleClose={() => setModalOpen(false)}
-        jugadorId={data.id} 
+        jugadorId={data.id}
       />
     </Box>
   );

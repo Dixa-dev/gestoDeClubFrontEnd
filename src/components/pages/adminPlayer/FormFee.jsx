@@ -4,16 +4,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
-
 const FormFee = ({ open, handleClose, jugadorId }) => {
   const [anio, setAnio] = useState("");
   const [mes, setMes] = useState("");
@@ -21,17 +11,15 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
   const [comprobantePago, setComprobantePago] = useState("");
   const [error, setError] = useState("");
 
-  const fechaPago = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const fechaPago = new Date().toISOString().split("T")[0];
 
   const handleSubmit = () => {
-    const normalizedMes = mes.toLowerCase(); // Convertir mes a minúsculas para evitar duplicados con diferentes casos
-  
-    // Ajuste: Obtener todas las cuotas y filtrar por jugadorId en el frontend
+    const normalizedMes = mes.toLowerCase();
+
     axios.get("https://gestor-de-club.vercel.app/api/cuotas")
       .then(response => {
         const cuotas = response.data;
         if (cuotas) {
-          // Filtrar cuotas para el jugador específico
           const cuotasJugador = cuotas.filter(fee => fee.jugadorId === jugadorId);
           
           const existingFee = cuotasJugador.find(fee => fee.anio === anio && fee.mes.toLowerCase() === normalizedMes);
@@ -40,7 +28,7 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
             return;
           }
         }
-  
+
         const cuotaData = {
           anio,
           mes: normalizedMes,
@@ -49,12 +37,11 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
           comprobantePago,
           jugadorId,
         };
-  
-        // Enviar la cuota solo si no hay duplicados
+
         axios.post("https://gestor-de-club.vercel.app/api/cuotas", cuotaData)
           .then(resp => {
             toast.success("Cuota registrada exitosamente");
-            handleClose(); // Cerrar modal después de enviar
+            handleClose();
           })
           .catch(error => {
             const errorMsg = error.response?.data?.message || "Error al registrar cuota";
@@ -71,7 +58,18 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
     <>
       <ToastContainer />
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            width: { xs: '80vw', md: '400px' }, // Ajuste del ancho para ser más chico en mobile
+          }}
+        >
           <Typography variant="h6" component="h2">Registrar Cuota</Typography>
           {error && <Typography color="error">{error}</Typography>}
           <TextField
@@ -119,3 +117,4 @@ const FormFee = ({ open, handleClose, jugadorId }) => {
 };
 
 export default FormFee;
+

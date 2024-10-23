@@ -14,12 +14,12 @@ import {
   TableRow,
   Paper,
   Stack,
-  Grid,
+  TableHead,
 } from "@mui/material";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import FormFee from './FormFee';
+import FormFee from "./FormFee";
 import { ContexGlobal } from "../../../utils/globalContext"; // Importar el contexto
 
 const formatColumnTitle = (title) => {
@@ -34,16 +34,18 @@ const DetailPlayer = () => {
   const [cuotas, setCuotas] = useState([]);
   const [showCuotas, setShowCuotas] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  
+
   const url = `https://gestor-de-club.vercel.app/api/jugadores/${id}`;
-  
-  const { obj: { user } } = useContext(ContexGlobal);
+
+  const {
+    obj: { user },
+  } = useContext(ContexGlobal);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(url, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Agregar el token en la cabecera
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         const detailData = response.data;
         setData(detailData);
@@ -59,7 +61,7 @@ const DetailPlayer = () => {
   return (
     <Box>
       <Link
-        to={"/admin-players"} // Cambiar a la ruta correcta
+        to={"/admin-players"}
         style={{
           textDecoration: "none",
           color: "inherit",
@@ -74,7 +76,10 @@ const DetailPlayer = () => {
           }}
         >
           <ArrowBackIosIcon />
-          <Typography variant="body1" sx={{ display: "flex", alignItems: "center" }}>
+          <Typography
+            variant="body1"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
             Volver
           </Typography>
         </Box>
@@ -90,7 +95,7 @@ const DetailPlayer = () => {
             border: "solid black 2px",
             width: { xs: "80%", md: "50%" },
             justifyContent: "space-around",
-            padding: { xs: "2vh", md: "0" }
+            padding: { xs: "2vh", md: "0" },
           }}
         >
           <CardContent
@@ -118,7 +123,9 @@ const DetailPlayer = () => {
             </Stack>
 
             <CardActions>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: "2vh" }}>
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: "2vh" }}
+              >
                 {(user.role === "COBRADOR" || user.role === "SUPER") && (
                   <Button
                     variant="outlined"
@@ -150,18 +157,30 @@ const DetailPlayer = () => {
                 <TableBody>
                   {Object.entries(data)
                     .filter(
-                      ([key]) => key !== "id" && key !== "createAd" && key !== "updatedAt" && key !== "cuotas"
+                      ([key]) =>
+                        key !== "id" &&
+                        key !== "createAd" &&
+                        key !== "updatedAt" &&
+                        key !== "cuotas"
                     )
                     .map(([key, value]) => (
                       <TableRow key={key}>
-                        <TableCell sx={{ paddingRight: { xs: "1vw", md: "5vw" } }}>
-                          <Typography variant="body1" component="div" fontWeight="bold">
+                        <TableCell
+                          sx={{ paddingRight: { xs: "1vw", md: "5vw" } }}
+                        >
+                          <Typography
+                            variant="body1"
+                            component="div"
+                            fontWeight="bold"
+                          >
                             {formatColumnTitle(key)}
                           </Typography>
                         </TableCell>
                         <TableCell>
                           <Typography variant="body1" component="div">
-                            {value !== null && value !== undefined ? String(value) : "N/A"}
+                            {value !== null && value !== undefined
+                              ? String(value)
+                              : "N/A"}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -175,24 +194,80 @@ const DetailPlayer = () => {
 
       {/* Tabla de cuotas */}
       {showCuotas && (
-        <Box sx={{ marginTop: "2vh", padding: "0 5vw" }}>
+        <Box sx={{ marginTop: "2vh", padding: "0 5vw", marginBottom: "2vh" }}>
           <Typography variant="h6">Historial de Cuotas</Typography>
           <TableContainer component={Paper}>
             <Table>
+              {/* Encabezados de la tabla */}
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{
+                      background: "#00800080",
+                      color: "#FFF",
+                      borderRight: "1px solid #ccc",
+                    }}
+                  >
+                    Año
+                  </TableCell>
+
+                  <TableCell
+                    sx={{
+                      background: "#00800080",
+                      color: "#FFF",
+                      borderRight: "1px solid #ccc",
+                    }}
+                  >
+                    Mes
+                  </TableCell>
+                  <TableCell sx={{ background: "#00800080", color: "#FFF" }}>
+                    Monto
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      background: "#00800080",
+                      color: "#FFF",
+                      borderRight: "1px solid #ccc",
+                    }}
+                  >
+                    Fecha Pago
+                  </TableCell>
+
+                  <TableCell
+                    sx={{
+                      background: "#00800080",
+                      color: "#FFF",
+                      borderRight: "1px solid #ccc",
+                    }}
+                  >
+                    Comprobante Pago
+                  </TableCell>
+                </TableRow>
+              </TableHead>
               <TableBody>
                 {cuotas.length > 0 ? (
                   cuotas.map((cuota) => (
                     <TableRow key={cuota.id}>
-                      <TableCell>{cuota.anio}</TableCell>
-                      <TableCell>{cuota.comprobantePago}</TableCell>
-                      <TableCell>{cuota.fechaPago}</TableCell>
-                      <TableCell>{cuota.mes}</TableCell>
-                      <TableCell>{cuota.monto}</TableCell>
+                      <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                        {cuota.anio}
+                      </TableCell>
+                      <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                        {cuota.mes}
+                      </TableCell>
+                      <TableCell sx={{ borderRight: "1px solid #ccc" }}>{cuota.monto}</TableCell>
+                      <TableCell sx={{ borderRight: "1px solid #ccc" }}>
+                        {cuota.fechaPago}
+                      </TableCell>
+                      <TableCell >
+                        {cuota.comprobantePago}
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5}>No hay cuotas registradas.</TableCell>
+                    <TableCell colSpan={5}>
+                      No hay cuotas registradas.
+                    </TableCell>
                   </TableRow>
                 )}
               </TableBody>

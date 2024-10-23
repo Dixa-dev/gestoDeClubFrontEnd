@@ -99,7 +99,7 @@ const PlayerList = ({
   <Button
     variant="contained"
     onClick={quitarFiltros}
-    sx={{ height: { xs:"5.6vh", md:"3vh"}, fontSize: "1.5vh", width: {xs:"5vw", md:"8vw"},  }} // Ajusta el tamaño del botón para que coincida
+    sx={{ height: { xs:"5.6vh", md:"3.5vh"}, fontSize: "1.5vh", width: {xs:"5vw", md:"10vw"},  }} // Ajusta el tamaño del botón para que coincida
   >
     Quitar filtros
   </Button>

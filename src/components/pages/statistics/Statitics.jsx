@@ -17,8 +17,23 @@ const Statitics = () => {
   console.log(balances);
 
   return (
-    <Box sx={{ display: "Flex", flexDirection: "column" }}>
-      <Box sx={{ margin: "10vh", display: "flex", gap: "2vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "2vh",
+      }}
+    >
+      <Box
+        sx={{
+          margin: "5vh 0",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: "2vh", sm: "2vw" },
+          alignItems: "center",
+        }}
+      >
         <TextField
           label="Mes"
           value={month}
@@ -32,7 +47,14 @@ const Statitics = () => {
         />
         <Button type="button">Aplicar filtro</Button>
       </Box>
-      <Box sx={{ display: "flex", marginLeft: "5vw", gap: "3vw" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "3vw",
+        }}
+      >
         {balances.map((balance) => {
           return (
             <Box
@@ -45,7 +67,7 @@ const Statitics = () => {
                 border: "solid 2px #00800080",
                 marginBottom: "5vh",
                 height: "20vh",
-                width: "15vw",
+                width: { xs: "80vw", sm: "15vw" },
                 justifyContent: "space-around",
               }}
             >

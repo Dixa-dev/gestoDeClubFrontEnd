@@ -8,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, TableCell, Typography } from "@mui/material";
+import { Box, Button, TableCell, Typography, useMediaQuery } from "@mui/material";
 import TransactionModal from "./TransactionModal"; // Importar el modal genérico
 
 // Estilos personalizados para las celdas de encabezado
@@ -41,6 +41,8 @@ const DetailEvent = () => {
 
   const { id } = useParams();
   const url = `https://gestor-de-club.vercel.app/api/eventos/${id}`;
+
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     axios.get(url).then((res) => {
@@ -79,9 +81,32 @@ const DetailEvent = () => {
         <Typography variant="subtitle1" sx={{ marginTop: "0.5vh", marginLeft: "2vh" }}>
           Fecha: {new Date(data.createAd).toLocaleDateString("es-ES")}
         </Typography>
-        <Box sx={{ display: "flex", justifyContent: "center", gap: "10vw", marginTop: "5vh" }}>
-          <Button variant="outlined" color="success" onClick={() => handleOpenModal("expense")}>+ Agregar gasto</Button>
-          <Button variant="outlined" color="success" onClick={() => handleOpenModal("income")}> + Agregar ingreso</Button>
+        <Box 
+          sx={{ 
+            display: "flex", 
+            flexDirection: isMobile ? "column" : "row", 
+            justifyContent: "center", 
+            alignItems: "center",
+            gap: isMobile ? "2vh" : "10vw", 
+            marginTop: "5vh" 
+          }}
+        >
+          <Button 
+            variant="outlined" 
+            color="success" 
+            onClick={() => handleOpenModal("expense")}
+            sx={{ width: isMobile ? "80%" : "auto" }}
+          >
+            + Agregar gasto
+          </Button>
+          <Button 
+            variant="outlined" 
+            color="success" 
+            onClick={() => handleOpenModal("income")}
+            sx={{ width: isMobile ? "80%" : "auto" }}
+          >
+            + Agregar ingreso
+          </Button>
         </Box>
 
         <TransactionModal
@@ -92,7 +117,14 @@ const DetailEvent = () => {
           onTransactionSuccess={handleTransactionSuccess}
         />
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <TableContainer component={Paper} sx={{ marginBottom: "10vh", marginTop: "5vh", width: "65%" }}>
+          <TableContainer 
+            component={Paper} 
+            sx={{ 
+              marginBottom: "10vh", 
+              marginTop: "5vh", 
+              width: isMobile ? "100%" : "65%" 
+            }}
+          >
             <Table aria-label="customized table">
               <TableHead>
                 <TableRow>

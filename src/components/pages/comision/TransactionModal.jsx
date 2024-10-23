@@ -1,22 +1,7 @@
 import React, { useState } from "react";
-import { Box, Button, Modal, TextField, Typography } from "@mui/material";
+import { Box, Button, Modal, TextField, Typography, useMediaQuery } from "@mui/material";
 import axios from "axios";
 
-const modalStyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-  gap: 2,
-};
-
-// Modal genérico para agregar ingresos o gastos
 const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSuccess }) => {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -26,13 +11,28 @@ const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSucce
   });
 
   const isIncome = type === "income";
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: isMobile ? "80%" : 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: name === "monto" || name === "reciboInicial" || name === "reciboFinal"
-        ? parseInt(value, 10) || 0 // Convertir a entero, asegurando que no sea NaN
+        ? parseInt(value, 10) || 0
         : value,
     });
   };
@@ -40,7 +40,7 @@ const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSucce
   const handleSubmit = () => {
     const data = {
       nombre: formData.nombre,
-      monto: formData.monto, // Asegurar que monto sea un entero
+      monto: formData.monto,
       eventoId: parseInt(eventId, 10),
       ...(isIncome && {
         reciboInicial: formData.reciboInicial,
@@ -56,7 +56,7 @@ const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSucce
       .post(url, data)
       .then((response) => {
         handleClose();
-        onTransactionSuccess(response.data); // Llamar a la función para actualizar el estado
+        onTransactionSuccess(response.data);
       })
       .catch((error) => {
         console.error("Error al agregar transacción:", error);
@@ -93,7 +93,7 @@ const TransactionModal = ({ open, handleClose, type, eventId, onTransactionSucce
             />
           </>
         )}
-        <Box sx={{display:"flex", justifyContent:"space-between", marginTop:"2vh" }} >
+        <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: "2vh" }}>
           <Button variant="outlined" color="success" onClick={handleClose}>
             Salir
           </Button>

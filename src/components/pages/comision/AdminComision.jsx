@@ -62,82 +62,130 @@ const AdminComision = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "10vh 0" }}>
       <Box
         sx={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-around",
+          gap: "1vw",
           marginTop: "3vh",
-          marginRight: "2vw",
+          flexDirection: { xs: "column", md: "row" },
         }}
       >
+        <Box>
         <Button
           color="success"
-          sx={{ backgroundColor: "white", border: "solid" }}
+          sx={(theme) => ({
+            backgroundColor: "white",
+            border: "solid",
+            flex: "1 1 200px",
+            marginBottom: "1vh",
+            height: "8vh", // Altura por defecto
+            width: "20vw", // Ancho por defecto
+            [theme.breakpoints.down("md")]: {
+              height: "5vh", // Ajuste de altura en pantallas más pequeñas
+              width: "70vw", // Ajuste de ancho en pantallas más pequeñas
+            },
+          })}
           onClick={handleOpen}
         >
           Crear evento
         </Button>
-
-        {/* Modal */}
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle style={{ color: "green" }}>
-            Crear nuevo evento
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Nombre del evento"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="secondary">
-              Cancelar
-            </Button>
-            <Button onClick={handleSubmit} color="primary" variant="contained">
-              Crear
-            </Button>
-          </DialogActions>
-        </Dialog>
+        </Box>
         <Link to={"/admin-players"}>
           <Button
             color="success"
-            sx={{ backgroundColor: "white", border: "solid" }}
+            sx={(theme) => ({
+              backgroundColor: "white",
+              border: "solid",
+              flex: "1 1 200px",
+              marginBottom: "1vh",
+              height: "8vh", // Altura por defecto
+              width: "20vw", // Ancho por defecto
+              [theme.breakpoints.down("md")]: {
+                height: "5vh", // Ajuste de altura en pantallas más pequeñas
+                width: "70vw", // Ajuste de ancho en pantallas más pequeñas
+              },
+            })}
           >
-            Seccion jugadores
+            Sección jugadores
           </Button>
         </Link>
 
         <Link to={"/statistics"}>
           <Button
             color="success"
-            sx={{ backgroundColor: "white", border: "solid" }}
+            sx={(theme) => ({
+              backgroundColor: "white",
+              border: "solid",
+              flex: "1 1 200px",
+              marginBottom: "1vh",
+              height: "8vh", // Altura por defecto
+              width: "20vw", // Ancho por defecto
+              [theme.breakpoints.down("md")]: {
+                height: "5vh", // Ajuste de altura en pantallas más pequeñas
+                width: "70vw", // Ajuste de ancho en pantallas más pequeñas
+              },
+            })}
           >
-            Estadisticas
+            Estadísticas
           </Button>
         </Link>
       </Box>
+
+      {/* Modal */}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle style={{ color: "green" }}>Crear nuevo evento</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Nombre del evento"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={handleSubmit} color="primary" variant="contained">
+            Crear
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Listado de eventos */}
-      <Box sx={{ display: "flex", gap: "2vw", margin: "5vw" }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr", // 1 columna en pantallas pequeñas
+            sm: "1fr 1fr", // 2 columnas en pantallas medianas
+            md: "1fr 1fr 1fr", // 3 columnas en pantallas más grandes
+          },
+          gap: "2vw",
+          width: "90%",
+          marginTop: "5vh",
+        }}
+      >
         {events.map((event) => (
           <CardContent
             key={event.id}
             sx={{
               border: "2px solid green",
-              width: "20vw",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               gap: "2vh",
+              padding: "2vh",
             }}
           >
             <Typography variant="h5" component="div">
               {event.titulo || "Sin título"}
             </Typography>
-            <Typography variant="h8">
+            <Typography variant="body2">
               Fecha: {new Date(event.createAd).toLocaleDateString("es-ES")}
             </Typography>
 
@@ -153,6 +201,7 @@ const AdminComision = () => {
           </CardContent>
         ))}
       </Box>
+
       <ToastContainer />
     </Box>
   );
